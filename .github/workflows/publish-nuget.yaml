@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+name: publish
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_NOLOGO: true
+  BUILD_CONFIGURATION: 'Release'
+  NUGET_OUTPUT: ${{ github.workspace }}/nuget
+  PACKAGE_VERSION: ${{ github.event.release.tag_name }}
+  PACKAGE_RELEASE_NOTES: ${{ github.event.release.body }}
+
+jobs:
+  publish-nuget:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Set up .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: global.json
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build NoLoops  
+      run: dotnet build --configuration ${{env.BUILD_CONFIGURATION}} --no-restore
+
+    - name: Run tests
+      run: dotnet test --configuration ${{env.BUILD_CONFIGURATION}} --no-restore --no-build
+
+    - name: Create NuGet package
+      run: dotnet pack --configuration ${{env.BUILD_CONFIGURATION}} -p:PackageVersion=${PACKAGE_VERSION} -p:PackageReleaseNotes=${PACKAGE_RELEASE_NOTES} --output ${{env.NUGET_OUTPUT}} --no-restore --no-build
+
+    - name: Publish NuGet package
+      run: dotnet nuget push ${{env.NUGET_OUTPUT}}/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_API_KEY}}
