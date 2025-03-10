@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Authors>Rubén Campos Zurriaga</Authors>
+    <Owners>Rubén Campos Zurriaga</Owners>
+    <PackageDescription>
+      Extension methods for the IEnumerable and IAsyncEnumerable interfaces.
+    </PackageDescription>
+    <PackageProjectUrl>https://github.com/rucamzu/NoLoops</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/rucamzu/NoLoops</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>linq</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © Rubén Campos Zurriaga 2025. All rights reserved.</Copyright>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+</Project>
