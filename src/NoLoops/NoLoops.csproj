@@ -16,7 +16,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>linq</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright © Rubén Campos Zurriaga 2025. All rights reserved.</Copyright>
+    <Copyright>Copyright © 2025 Rubén Campos Zurriaga. All rights reserved.</Copyright>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
