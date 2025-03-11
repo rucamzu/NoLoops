@@ -33,6 +33,46 @@ namespace NoLoops;
 public static class NoLoops
 {
     /// <summary>
+    /// Executes a side-effect on every element of a sequence.
+    /// </summary>
+    /// <typeparam name="TSource">
+    /// The type of the elements of the <paramref name="source"/> sequence.
+    /// </typeparam>
+    /// <param name="source">
+    /// An <see cref="IEnumerable{T}"/> sequence.
+    /// </param>
+    /// <param name="sideEffect">
+    /// An action with side-effects.
+    /// </param>
+    /// <returns>
+    /// The original <paramref name="source"/> sequence.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// The <paramref name="sideEffect"/> action is executed on each element yielded by the
+    /// <paramref name="source"/> sequence, immediately before the element is in turn yielded
+    /// by this method.
+    /// </para>
+    /// <para>
+    /// This method is semantically equivalent to the following standard LINQ expression:
+    /// <code>
+    /// source.Select(element => { sideEffect(element); return element; })
+    /// </code>
+    /// </para>
+    /// </remarks>
+    public static IEnumerable<TSource> Do<TSource>(this IEnumerable<TSource> source, Action<TSource> sideEffect)
+    {
+        var enumerator = source.GetEnumerator();
+
+        while (enumerator.MoveNext())
+        {
+            sideEffect(enumerator.Current);
+
+            yield return enumerator.Current;
+        }
+    }
+
+    /// <summary>
     /// Groups consecutive elements of a sequence that map to equal keys.
     /// </summary>
     /// <typeparam name="TSource">
