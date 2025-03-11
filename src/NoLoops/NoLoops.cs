@@ -27,6 +27,9 @@ using System.Diagnostics.Contracts;
 
 namespace NoLoops;
 
+/// <summary>
+/// Extension methods for the <see cref="IEnumerable{T}"/> and <see cref="IAsyncEnumerable{T}"/> interfaces.
+/// </summary>
 public static class NoLoops
 {
     /// <summary>
