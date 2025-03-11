@@ -4,7 +4,7 @@
         "src": [
           {
             "files": [
-              "src/NoLoops/bin/Release/**/Swolfkrow.dll"
+              "src/NoLoops/bin/Release/**/NoLoops.dll"
             ],
             "src": "../"
           }
