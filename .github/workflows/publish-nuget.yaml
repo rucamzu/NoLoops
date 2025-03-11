@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 
-name: publish
+name: publish-nuget
 on:
   release:
     types: [published]
@@ -12,7 +12,6 @@ env:
   BUILD_CONFIGURATION: 'Release'
   NUGET_OUTPUT: ${{ github.workspace }}/nuget
   PACKAGE_VERSION: ${{ github.event.release.tag_name }}
-  PACKAGE_RELEASE_NOTES: ${{ github.event.release.body }}
 
 jobs:
   publish-nuget:
@@ -37,7 +36,7 @@ jobs:
       run: dotnet test --configuration ${{env.BUILD_CONFIGURATION}} --no-restore --no-build
 
     - name: Create NuGet package
-      run: dotnet pack --configuration ${{env.BUILD_CONFIGURATION}} -p:PackageVersion=${PACKAGE_VERSION} -p:PackageReleaseNotes=${PACKAGE_RELEASE_NOTES} --output ${{env.NUGET_OUTPUT}} --no-restore --no-build
+      run: dotnet pack --configuration ${{env.BUILD_CONFIGURATION}} -p:PackageVersion=${PACKAGE_VERSION} --output ${{env.NUGET_OUTPUT}} --no-restore --no-build
 
     - name: Publish NuGet package
       run: dotnet nuget push ${{env.NUGET_OUTPUT}}/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_API_KEY}}
