@@ -1,4 +1,4 @@
-# Swolfkrow
+# NoLoops
 
 This is the official documentation site for [NoLoops][noloops-github].
 
