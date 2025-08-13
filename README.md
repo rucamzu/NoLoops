@@ -2,11 +2,13 @@
 
 ## Motivation
 
-I dislike loops. Loops encourage imperative code, which I dislike even more so. Whenever I can, which is pretty much always but in the more performance-sensitive places, I very much rather using [LINQ][microsoft-linq] expressions instead. Still, LINQ has its limitatons.
+I don't like loops very much. Loops encourage imperative code, which I don't like very much either. Whenever possible, which is pretty much always but in the more performance-sensitive places, I very much rather using [LINQ][microsoft-linq] expressions instead.
+
+Still, LINQ has its limitatons.
 
 ## Overview
 
-*NoLoops* is a collection of extension methods for the [`IEnumerable<T>`][microsoft-ienumerable] and [`IAsyncEnumerable<T>`][microsoft-iasyncenumerable] interfaces, that I needed at one point and found  LINQ lacked.
+*NoLoops* is a collection of extension methods for the [`IEnumerable<T>`][microsoft-ienumerable] and [`IAsyncEnumerable<T>`][microsoft-iasyncenumerable] interfaces, that I needed at one point and found LINQ lacked.
 
 ## Using *NoLoops*
 
