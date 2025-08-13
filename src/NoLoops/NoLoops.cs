@@ -33,6 +33,26 @@ namespace NoLoops;
 public static class NoLoops
 {
     /// <summary>
+    /// Returns an empty sequence that executes a side-effect when enumerated.
+    /// </summary>
+    /// <typeparam name="TSource">
+    /// The type of the elements of the resulting empty sequence.
+    /// </typeparam>
+    /// <param name="sideEffect">
+    /// An action with side-effects.
+    /// </param>
+    /// <returns>
+    /// An empty sequence that executes the given side-effect when enumerated.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// The <paramref name="sideEffect"/> action is executed when the resulting empty sequence is enumerated.
+    /// </para>
+    /// </remarks>
+    public static IEnumerable<TSource> Do<TSource>(Action sideEffect)
+        => Enumerable.SideEffect<TSource>(sideEffect);
+
+    /// <summary>
     /// Executes a side-effect on every element of a sequence.
     /// </summary>
     /// <typeparam name="TSource">
@@ -442,4 +462,41 @@ public static class NoLoops
 
     [Pure]
     private static T Identity<T>(T value) => value;
+}
+
+file static class Enumerable
+{
+    public static IEnumerable<TSource> SideEffect<TSource>(Action sideEffect)
+        => new SideEffectEnumerable<TSource>(sideEffect);
+
+    private readonly struct SideEffectEnumerable<TSource>(Action sideEffect) : IEnumerable<TSource>
+    {
+        public IEnumerator<TSource> GetEnumerator()
+        {
+            sideEffect();
+
+            return Enumerator.Empty<TSource>();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+}
+
+file static class Enumerator
+{
+    public static IEnumerator<TSource> Empty<TSource>()
+        => new EmptyEnumerator<TSource>();
+
+    private readonly struct EmptyEnumerator<TSource> : IEnumerator<TSource>
+    {
+        TSource IEnumerator<TSource>.Current => throw new InvalidOperationException();
+
+        object IEnumerator.Current => throw new InvalidOperationException();
+
+        bool IEnumerator.MoveNext() => false;
+
+        void IEnumerator.Reset() { }
+
+        void IDisposable.Dispose() { }
+    }
 }
