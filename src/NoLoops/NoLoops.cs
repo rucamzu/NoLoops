@@ -33,6 +33,75 @@ namespace NoLoops;
 public static class NoLoops
 {
     /// <summary>
+    /// Computes the cartesian product of two sequences.
+    /// </summary>
+    /// <typeparam name="TSource1">
+    /// The type of the elements of the first input sequence.
+    /// </typeparam>
+    /// <typeparam name="TSource2">
+    /// The type of the elements of the second input sequence.
+    /// </typeparam>
+    /// <param name="source1">
+    /// The first input sequence.
+    /// </param>
+    /// <param name="source2">
+    /// The second input sequence.
+    /// </param>
+    /// <returns>
+    /// A sequence of all the tuples in the cartesian product of the two input sequences.
+    /// </returns>
+    /// <remarks>
+    /// The <paramref name="source2"/> input sequence is enumerated once per element of
+    /// the <paramref name="source1"/> input sequence.
+    /// </remarks>
+    public static IEnumerable<(TSource1, TSource2)> Cartesian<TSource1, TSource2>(
+        this IEnumerable<TSource1> source1,
+        IEnumerable<TSource2> source2)
+        => source1.Cartesian(source2, ValueTuple.Create);
+
+    /// <summary>
+    /// Computes the projected cartesian product of two sequences.
+    /// </summary>
+    /// <typeparam name="TSource1">
+    /// The type of the elements of the first input sequence.
+    /// </typeparam>
+    /// <typeparam name="TSource2">
+    /// The type of the elements of the second input sequence.
+    /// </typeparam>
+    /// <typeparam name="TResult">
+    /// The type of the elements of the resulting sequence.
+    /// </typeparam>
+    /// <param name="source1">
+    /// The first input sequence.
+    /// </param>
+    /// <param name="source2">
+    /// The second input sequence.
+    /// </param>
+    /// <param name="resultSelector">
+    /// A projection that maps elements from both input sequences to produce a result element.
+    /// </param>
+    /// <returns>
+    /// A sequence of projections of all the tuples in the cartesian product of the two input sequences.
+    /// </returns>
+    /// <remarks>
+    /// The <paramref name="source2"/> input sequence is enumerated once per element of
+    /// the <paramref name="source1"/> input sequence.
+    /// </remarks>
+    public static IEnumerable<TResult> Cartesian<TSource1, TSource2, TResult>(
+        this IEnumerable<TSource1> source1,
+        IEnumerable<TSource2> source2,
+        Func<TSource1, TSource2, TResult> resultSelector)
+    {
+        foreach (var first in source1)
+        {
+            foreach (var secondItem in source2)
+            {
+                yield return resultSelector(first, secondItem);
+            }
+        }
+    }
+
+    /// <summary>
     /// Returns an empty sequence that executes a side-effect when enumerated.
     /// </summary>
     /// <typeparam name="TSource">
